@@ -1,0 +1,28 @@
+# make cache matrix
+makeCacheMatrix<-function(x = matrix()){
+  inverse<-NULL
+  set<-function (y) {
+    x<<-y
+    inverse<<-NULL
+  }
+  get<-function(){
+    x
+  } 
+  setinverse<-function(m) inverse<<-m
+  getinverse<-function()inverse
+  list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
+}
+
+# make cache solve function
+cacheSolve<-function (x,...){
+  inverse<-x$getinverse()
+  if(!is.null(inverse)){
+    message ("receive cached data")
+    return(inverse)
+  }
+  data<-x$receive()
+  inverse<-solve(data)
+  x$setinverse(inverse)
+  inverse
+}
+# cache solve returns a matrix that is the inverse of x
